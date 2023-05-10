@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="btnColor">#8BC83F</color>
+    <color name="btnColorVar">#8BC83F</color>
+    <color name="titleTextColor">#1F4C6B</color>
+    <color name="textColor">#53587A</color>
+
+
+    <color name="purple_200">#8BC83F</color>
+    <color name="purple_500">#8BC83F</color>
+    <color name="purple_700">#8BC83F</color>
+    <color name="teal_200">#8BC83F</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#8BC83F</color>
+    <color name="white">#FFFFFFFF</color>
+</resources>
