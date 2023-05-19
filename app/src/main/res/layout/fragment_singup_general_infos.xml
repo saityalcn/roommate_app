@@ -5,14 +5,23 @@
     android:layout_height="match_parent"
     tools:context=".SingupGeneralInfosFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:paddingTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
     <LinearLayout
+        android:id="@+id/content_wrapper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:paddingLeft="30dp"
-        android:paddingTop="20dp"
-        android:paddingRight="30dp"
-        tools:context=".LoginActivity">
+        android:paddingTop="144dp"
+        android:paddingRight="30dp">
 
         <TextView
             android:id="@+id/textView2"
@@ -31,7 +40,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="E-Posta ve şifreni kullanarak giriş yapabilirsin."
+            android:text="Hesap bilgilerini girerek hesabını oluşturabilirsin."
             android:textColor="@color/textColor" />
 
 
@@ -40,39 +49,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="20dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="30dp"
-                android:text="Ad"
-                android:textColor="@color/textColor" />
-
-            <EditText
-                android:id="@+id/editTextName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Ad"
-                android:inputType="text"
-                android:paddingTop="10dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="30dp"
-                android:text="Soyad"
-                android:textColor="@color/textColor" />
-
-            <EditText
-                android:id="@+id/editTextSurname"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Soyad"
-                android:inputType="text"
-                android:paddingTop="10dp" />
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -113,7 +89,7 @@
                 android:textColor="@color/textColor" />
 
             <EditText
-                android:id="@+id/editTextReTextPassword"
+                android:id="@+id/editTextTextRePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -123,12 +99,11 @@
 
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/saveBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:onClick="onSignUpBtnClick"
                 android:paddingTop="15dp"
                 android:paddingBottom="15dp"
                 android:text="Üye Ol" />

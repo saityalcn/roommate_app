@@ -23,37 +23,6 @@ class SignupActivity : AppCompatActivity() {
         auth = Firebase.auth
 
         supportActionBar?.hide()
-
-
-    }
-
-    fun onSignUpBtnClick(view: View){
-        val emailField = findViewById<EditText>(R.id.editTextTextEmailAddress)
-        val passwordField = findViewById<EditText>(R.id.editTextTextPassword)
-
-        auth.createUserWithEmailAndPassword(emailField.text.toString(), passwordField.text.toString())
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    if(auth.currentUser?.isEmailVerified != true)
-                        auth.currentUser?.sendEmailVerification()
-
-                    else
-                        showErrorSnackbar(view, "E-posta doğrulaması yapılmamış. Giriş yapabilmek için lütfen e-posta adresinize gelen link üzerinden doğrulayınız.")
-                } else {
-                    showErrorSnackbar(view, "E-Posta veya şifre yanlış tekrar deneyiniz.")
-                }
-            }
-        auth.currentUser?.sendEmailVerification()
-    }
-
-    fun showErrorSnackbar(view: View, message: String){
-        val snack: Snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
-        val view = snack.view
-        val params = view.layoutParams as FrameLayout.LayoutParams
-        params.gravity = Gravity.TOP
-        view.layoutParams = params
-        view.setBackgroundColor(Color.RED)
-        snack.show()
     }
 
     fun changeFragment(fragment: Fragment) {

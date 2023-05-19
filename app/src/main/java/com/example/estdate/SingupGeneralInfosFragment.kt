@@ -1,10 +1,20 @@
 package com.example.estdate
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -57,8 +67,73 @@ class SingupGeneralInfosFragment : Fragment() {
             }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    fun onNextButtonClick(view: View){
+        requireView().findViewById<ProgressBar>(R.id.progressBar).visibility = View.INVISIBLE
 
+        requireView().findViewById<Button>(R.id.saveBtn).setOnClickListener {
+            onSignUpBtnClick(it);
+        }
+    }
+
+
+
+    fun onSignUpBtnClick(view: View){
+        val auth = Firebase.auth
+        val email:String = requireView().findViewById<EditText>(R.id.editTextTextEmailAddress).text.toString()
+        val password:String = requireView().findViewById<EditText>(R.id.editTextTextPassword).text.toString()
+        val passwordReEnter = requireView().findViewById<EditText>(R.id.editTextTextRePassword).text.toString()
+
+        if(password != passwordReEnter){
+            showErrorSnackbar(view,"Entered passwords must be match")
+        } else {
+            requireView().findViewById<ProgressBar>(R.id.progressBar).visibility = View.VISIBLE
+            requireView().findViewById<LinearLayout>(R.id.content_wrapper).visibility = View.INVISIBLE
+            auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener {
+                if (auth.currentUser != null) {
+                    auth.currentUser!!.sendEmailVerification().addOnSuccessListener {
+                        showSuccessSnackbar(view, "Doğrulama e-postası hesabınıza başarıyla gönderilmiştir.")
+                        changeFragment(SignupDetailFragment())
+                    }.addOnFailureListener {
+                        requireView().findViewById<ProgressBar>(R.id.progressBar).visibility = View.INVISIBLE
+                        requireView().findViewById<LinearLayout>(R.id.content_wrapper).visibility = View.VISIBLE
+                        showErrorSnackbar(view, it.localizedMessage)
+                    }
+
+                }
+            }.addOnFailureListener {
+                requireView().findViewById<ProgressBar>(R.id.progressBar).visibility = View.INVISIBLE
+                requireView().findViewById<LinearLayout>(R.id.content_wrapper).visibility = View.VISIBLE
+                showErrorSnackbar(view, it.localizedMessage)
+            }
+        }
+
+    }
+
+    fun showSuccessSnackbar(view: View, message: String){
+        val snack: Snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        val view = snack.view
+        val params = view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        view.layoutParams = params
+        view.setBackgroundColor(Color.GREEN)
+        snack.show()
+    }
+
+    fun showErrorSnackbar(view: View, message: String){
+        val snack: Snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
+        val view = snack.view
+        val params = view.layoutParams as FrameLayout.LayoutParams
+        params.gravity = Gravity.TOP
+        view.layoutParams = params
+        view.setBackgroundColor(Color.RED)
+        snack.show()
+    }
+
+    fun changeFragment(fragment: Fragment) {
+        val fragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.signupFrameLayout, fragment)
+        fragmentTransaction.commit()
     }
 }

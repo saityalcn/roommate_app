@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.estdate.LoginActivity
+import com.example.estdate.ProfileActivity
 import com.example.estdate.R
 import com.example.estdate.models.Student
 import java.util.Date
@@ -22,7 +23,7 @@ class ListItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // Picasso.get().load(graduate.profilePhotoLink).into(itemView.findViewById<ImageView>(R.id.imageView))
 
         itemView.setOnClickListener{
-            val intent = Intent(itemView.context, LoginActivity::class.java)
+            val intent = Intent(itemView.context, ProfileActivity::class.java)
             intent.putExtra("uid", student.uid)
             itemView.context.startActivity(intent)
         }

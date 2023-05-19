@@ -25,7 +25,5 @@
         android:id="@+id/mapView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:contentDescription="Map"
-        tools:layout_editor_absoluteX="156dp"
-        tools:layout_editor_absoluteY="335dp" />
+        android:contentDescription="Map"/>
 </LinearLayout>

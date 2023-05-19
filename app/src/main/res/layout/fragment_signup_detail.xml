@@ -5,10 +5,246 @@
     android:layout_height="match_parent"
     tools:context=".SignupDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:paddingTop="30dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content" />
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="30dp"
+            android:paddingTop="20dp"
+            android:paddingRight="30dp"
+            tools:context=".LoginActivity">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Profil Bilgilerini Tamamla"
+                android:textColor="@color/titleTextColor"
+                android:textFontWeight="600"
+                android:textSize="25sp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Aşağıdaki bilgileri tamamlayarak profilini oluşturabilirsin."
+                android:textColor="@color/textColor" />
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dp"
+                    android:text="Ad"
+                    android:textColor="@color/textColor" />
+
+                <EditText
+                    android:id="@+id/editTextName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Ad"
+                    android:inputType="text"
+                    android:paddingTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dp"
+                    android:text="Soyad"
+                    android:textColor="@color/textColor" />
+
+                <EditText
+                    android:id="@+id/editTextSurname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="Soyad"
+                    android:inputType="text"
+                    android:paddingTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dp"
+                    android:text="Bölüm"
+                    android:textColor="@color/textColor" />
+
+                <EditText
+                    android:id="@+id/editTextDepartment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Bölüm"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:paddingTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dp"
+                    android:text="Sınıf"
+                    android:textColor="@color/textColor" />
+
+                <EditText
+                    android:id="@+id/editTextGrade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Sınıf"
+                    android:ems="10"
+                    android:inputType="text"
+                    android:paddingTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dp"
+                    android:text="Durum"
+                    android:textColor="@color/textColor" />
+
+                <Spinner
+                    android:id="@+id/stateSelectSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:minHeight="60dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dp"
+                    android:text="Kampüse İstenilen Uzaklık(m)"
+                    android:textColor="@color/textColor" />
+
+                <EditText
+                    android:id="@+id/editTextDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Mesafe (m)"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:paddingTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dp"
+                    android:text="Evde Kalınacak Yıl"
+                    android:textColor="@color/textColor" />
+
+                <EditText
+                    android:id="@+id/editTextYears"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Kalınacak Yıl"
+                    android:ems="10"
+                    android:inputType="numberDecimal"
+                    android:paddingTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dp"
+                    android:text="İletişim E-Postası"
+                    android:textColor="@color/textColor" />
+
+                <EditText
+                    android:id="@+id/editTextEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="example@gmail.com"
+                    android:ems="10"
+                    android:inputType="textEmailAddress"
+                    android:paddingTop="10dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="30dp"
+                    android:text="İletişim Telefon"
+                    android:textColor="@color/textColor" />
+
+                <EditText
+                    android:id="@+id/editTextPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Telefon Numarası"
+                    android:ems="10"
+                    android:inputType="phone"
+                    android:paddingTop="10dp" />
+
+
+                <LinearLayout
+                    android:id="@+id/imageSelectView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="40dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:textSize="16dp"
+                        android:textStyle="bold"
+                        android:text="Fotoğraf"/>
+
+
+                    <ImageView
+                        android:id="@+id/imageViewSelectPhoto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="60dp"
+                        android:src="@drawable/ic_add_photo" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/imageViewSelectedPhoto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxHeight="60dp"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="selectedPhoto" />
+
+                <Button
+                    android:id="@+id/saveBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:paddingTop="15dp"
+                    android:paddingBottom="15dp"
+                    android:text="Devam Et" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </FrameLayout>

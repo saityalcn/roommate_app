@@ -32,9 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        this.addUser()
-        this.getUsers()
-
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(R.id.nav_host_fragment_activity_main)
@@ -47,36 +44,6 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-    }
-
-    fun addUser(){
-        val db = Firebase.firestore
-        // Create a new user with a first and last name
-        val user = hashMapOf(
-            "first" to "Ada",
-            "last" to "Lovelace",
-            "born" to 1815
-        )
-
-        // Add a new document with a generated ID
-        db.collection("users")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d("Firebase", "DocumentSnapshot added with ID: ${documentReference.id}")
-            }
-            .addOnFailureListener { e ->
-                Log.w("Firebase", "Error adding document", e)
-            }
-    }
-
-    fun getUsers(){
-        val db = Firebase.firestore
-
-
-        db.collection("users").get().addOnSuccessListener{
-            Log.d("Firebase GET 0",it.documents.get(0).data?.get("first").toString())
-            Log.d("Firebase GET 1", it.documents.get(1).data?.get("first").toString())
-        }
     }
 
     fun onLoginButtonClick(view: View){

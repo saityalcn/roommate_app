@@ -23,8 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:maxHeight="60dp"
-                android:adjustViewBounds="true"
-                android:src="@drawable/dum"/>
+                android:adjustViewBounds="true" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -36,23 +35,25 @@
                 <TextView
                     android:id="@+id/textViewGraduteName"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/textViewAddress"
+                    android:id="@+id/textViewState"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingTop="10dp" />
+                    android:text="Ev Arıyor"/>
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/textViewProgram"
+                android:id="@+id/textViewAddress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="right|center_vertical" />
+                android:gravity="right|center_vertical"
+                android:text="Gungoren, Istanbul"/>
 
         </LinearLayout>
 

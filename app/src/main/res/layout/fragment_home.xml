@@ -5,6 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
     tools:context=".ui.home.HomeFragment">
 
     <LinearLayout
@@ -12,10 +16,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
         android:showDividers="middle">
 
         <LinearLayout
@@ -27,9 +27,7 @@
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingLeft="16dp"
                 android:paddingTop="16dp"
-                android:paddingRight="16dp"
                 android:paddingBottom="16dp"
                 app:cardCornerRadius="15dp"
                 app:strokeColor="@color/black"
@@ -85,6 +83,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:padding="10dp"
                 android:src="@drawable/ic_gps"
                 android:layout_gravity="center"/>
 
@@ -92,15 +91,43 @@
 
     </LinearLayout>
 
-    <android.widget.SearchView
-        android:id="@+id/searchView"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:iconifiedByDefault="false"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
-        android:queryHint="İlan Ara..." />
+        android:paddingBottom="20dp"
+        android:orientation="horizontal">
+        <android.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:iconifiedByDefault="false"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_weight="1"
+            android:queryHint="İlan Ara..." />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/filterBtn"
+            android:src="@drawable/baseline_filter_list_24"/>
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/students_list"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/searchView"
+        tools:listitem="@layout/list_item"/>
 
 </LinearLayout>
