@@ -56,8 +56,7 @@
                         <TextView
                             android:id="@+id/locationTextView"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Location" />
+                            android:layout_height="wrap_content" />
 
                         <TextView
                             android:id="@+id/textHome"
@@ -75,17 +74,15 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:cardCornerRadius="15dp"
             app:strokeColor="@color/black"
-            android:minWidth="60dp"
-            app:strokeWidth="1dp">
+            android:minWidth="60dp">
 
             <ImageView
+                android:id="@+id/profileImage"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="10dp"
-                android:src="@drawable/ic_gps"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:src="@drawable/ic_notifications_black_24dp"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -113,7 +110,7 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
             android:id="@+id/filterBtn"
-            android:src="@drawable/baseline_filter_list_24"/>
+            android:src="@drawable/baseline_filter_list_24" />
 
     </LinearLayout>
 

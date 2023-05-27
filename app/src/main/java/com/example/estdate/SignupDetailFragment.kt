@@ -19,11 +19,14 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.estdate.models.Student
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 
@@ -102,13 +105,14 @@ class SignupDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val auth = Firebase.auth
+        var student: Student? = null
 
         requireView().findViewById<ProgressBar>(R.id.progressBar).visibility = View.INVISIBLE
 
         createPopupMenu()
 
         requireView().findViewById<Button>(R.id.saveBtn).setOnClickListener {
-            onSaveBtnClick(it)
+            onSaveBtnClick(it, student)
         }
 
 
@@ -122,20 +126,53 @@ class SignupDetailFragment : Fragment() {
         }
 
         if(auth.currentUser != null) {
-            Firebase.firestore.collection("graduates").document(auth.currentUser!!.uid).get().addOnSuccessListener {
-                if(it["uid"] != null)
-                    initFields()
+            val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
+            val scrollView = requireView().findViewById<ScrollView>(R.id.scrollView)
+            progressBar.visibility = View.VISIBLE
+            scrollView.visibility = View.INVISIBLE
+
+            Firebase.firestore.collection("students").document(auth.currentUser!!.uid).get().addOnSuccessListener {
+                if(it["uid"] != null) {
+                    student = Student.fromDocumentSnapshot(it)
+                    initFields(student!!)
+                }
             }
         }
     }
 
-    fun initFields(){
-        val db = Firebase.firestore
-        val auth = Firebase.auth
-
+    fun initFields(student: Student){
         val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
+        val scrollView = requireView().findViewById<ScrollView>(R.id.scrollView)
+
+        val name = requireView().findViewById<EditText>(R.id.editTextName)
+        val surname = requireView().findViewById<EditText>(R.id.editTextSurname)
+
+        val department = requireView().findViewById<EditText>(R.id.editTextDepartment)
+        val grade = requireView().findViewById<EditText>(R.id.editTextGrade)
+        val selectedState = requireView().findViewById<Spinner>(R.id.stateSelectSpinner)
+        val distance = requireView().findViewById<EditText>(R.id.editTextDistance)
+        val duration = requireView().findViewById<EditText>(R.id.editTextYears)
+        val contactEmail = requireView().findViewById<EditText>(R.id.editTextEmail)
+        val contactPhone = requireView().findViewById<EditText>(R.id.editTextPhoneNumber)
 
 
+        progressBar.visibility = View.INVISIBLE
+        scrollView.visibility = View.VISIBLE
+
+        name.setText(student.name)
+        surname.setText(student.surname)
+
+        department.setText(student.department)
+        grade.setText(student.grade)
+        selectedState.setSelection(statesList.indexOf(student.state))
+        distance.setText(student.distance)
+        duration.setText(student.duration)
+        contactEmail.setText(student.contactEmail)
+        contactPhone.setText(student.contactPhone)
+
+        Glide.with(requireView())
+            .load(Uri.parse(student.profileImageUrl))
+            .into(requireView().findViewById<ImageView>(R.id.imageViewSelectedPhoto))
 
     }
 
@@ -184,8 +221,56 @@ class SignupDetailFragment : Fragment() {
         startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE)
     }
 
-    fun onSaveBtnClick(view: View){
-        onCreateBtnClick(view)
+    fun onSaveBtnClick(view: View, student: Student?){
+        if(student != null)
+            onUpdateBtnClick(view,student)
+
+        else
+            onCreateBtnClick(view)
+    }
+
+    fun onUpdateBtnClick(view: View, student: Student){
+        student.name = requireView().findViewById<EditText>(R.id.editTextName).text.toString()
+        student.surname = requireView().findViewById<EditText>(R.id.editTextSurname).text.toString()
+
+        student.department = requireView().findViewById<EditText>(R.id.editTextDepartment).text.toString()
+        student.grade = requireView().findViewById<EditText>(R.id.editTextGrade).text.toString()
+        student.state = requireView().findViewById<Spinner>(R.id.stateSelectSpinner).selectedItem as String
+        student.distance = requireView().findViewById<EditText>(R.id.editTextDistance).text.toString()
+        student.duration = requireView().findViewById<EditText>(R.id.editTextYears).text.toString()
+        student.contactEmail = requireView().findViewById<EditText>(R.id.editTextEmail).text.toString()
+        student.contactPhone = requireView().findViewById<EditText>(R.id.editTextPhoneNumber).text.toString()
+
+        saveStudent(view,student)
+    }
+
+    fun saveStudent(view: View, student: Student){
+        val auth = Firebase.auth
+        val db = Firebase.firestore
+        val progressBar = requireView().findViewById<ProgressBar>(R.id.progressBar)
+        val scrollView = requireView().findViewById<ScrollView>(R.id.scrollView)
+
+        progressBar.visibility = View.VISIBLE
+        scrollView.visibility = View.INVISIBLE
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                student.fcmToken = token
+            }
+
+            val docRef = db.collection("students").document(auth.currentUser!!.uid)
+
+            docRef.update(student.toMap())
+                .addOnSuccessListener {
+                    requireActivity().finish()
+                }.addOnFailureListener {
+                    progressBar.visibility = View.INVISIBLE
+                    scrollView.visibility = View.VISIBLE
+                    showErrorSnackbar(view, it.localizedMessage)
+                }
+        }
+
     }
 
     fun onCreateBtnClick(view: View){
@@ -208,18 +293,30 @@ class SignupDetailFragment : Fragment() {
         progressBar.visibility = View.VISIBLE
         scrollView.visibility = View.INVISIBLE
 
+        if(!::selectedImage.isInitialized){
+            showErrorSnackbar(view, "Please select an image")
+            return
+        }
+
         uploadImage().addOnSuccessListener {
             it.storage.downloadUrl.addOnSuccessListener {uri ->
-                val student: Student = Student(name, surname, auth.currentUser!!.uid, department,grade,selectedState,distance,duration,contactEmail,contactPhone,uri.toString())
-                db.collection("students").document(auth.currentUser!!.uid).set(student.toMap())
-                    .addOnSuccessListener {
-                        val intent = Intent(activity, MainActivity::class.java)
-                        startActivity(intent)
-                    }.addOnFailureListener {
-                        progressBar.visibility = View.INVISIBLE
-                        scrollView.visibility = View.VISIBLE
-                        showErrorSnackbar(view, it.localizedMessage)
+                FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                    val student: Student = Student(name, surname, auth.currentUser!!.uid, department,grade,selectedState,distance,duration,contactEmail,contactPhone,uri.toString(),Long.MIN_VALUE, Long.MIN_VALUE,"0", "", mutableListOf<String>())
+                    if (task.isSuccessful) {
+                        val token = task.result
+                        student.fcmToken = token
                     }
+
+                    db.collection("students").document(auth.currentUser!!.uid).set(student.toMap())
+                        .addOnSuccessListener {
+                            requireActivity().finish()
+                        }.addOnFailureListener {
+                            progressBar.visibility = View.INVISIBLE
+                            scrollView.visibility = View.VISIBLE
+                            showErrorSnackbar(view, it.localizedMessage)
+                        }
+                }
+
             }.addOnFailureListener {
                 progressBar.visibility = View.INVISIBLE
                 scrollView.visibility = View.VISIBLE
@@ -245,6 +342,4 @@ class SignupDetailFragment : Fragment() {
         view.setBackgroundColor(Color.RED)
         snack.show()
     }
-
-
 }

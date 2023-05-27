@@ -1,6 +1,7 @@
 package com.example.estdate.models
 
 import android.net.Uri
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.QueryDocumentSnapshot
 import kotlin.time.Duration
@@ -17,6 +18,11 @@ class Student {
     lateinit var contactEmail: String
     lateinit var contactPhone: String
     lateinit var profileImageUrl: String
+    var locationLatitude: Long
+    var locationLongitude: Long
+    lateinit var fcmToken: String
+    lateinit var address: String
+    lateinit var requests: MutableList<String>
 
     constructor(
         name: String,
@@ -29,7 +35,12 @@ class Student {
         duration: String,
         contactEmail: String,
         contactPhone: String,
-        profileImageUrl: String
+        profileImageUrl: String,
+        locationLatitude: Long,
+        locationLongitude: Long,
+        fcmToken: String,
+        address: String,
+        requests: MutableList<String>
     ){
         this.name = name
         this.surname = surname
@@ -42,6 +53,11 @@ class Student {
         this.contactEmail = contactEmail
         this.contactPhone = contactPhone
         this.profileImageUrl = profileImageUrl
+        this.locationLatitude = locationLatitude
+        this.locationLongitude = locationLongitude
+        this.fcmToken = fcmToken
+        this.address = address
+        this.requests = requests
     }
 
     fun toMap(): HashMap<String, Any>{
@@ -56,12 +72,26 @@ class Student {
             "duration" to duration,
             "contactEmail" to contactEmail,
             "contactPhone" to contactPhone,
-            "profileImageUrl" to profileImageUrl
+            "profileImageUrl" to profileImageUrl,
+            "locationLatitude" to locationLatitude,
+            "locationLongitude" to locationLongitude,
+            "fcmToken" to fcmToken,
+            "address" to address,
+            "requests" to requests
         )
     }
 
     companion object{
         fun toObject(map: QueryDocumentSnapshot): Student{
+            val locationLatitude = if(map["locationLatitude"] !is Long)
+                (map["locationLatitude"] as Double).toLong()
+            else
+                (map["locationLatitude"] as Long)
+
+            val locationLongitude = if(map["locationLongitude"] !is Long)
+                (map["locationLongitude"] as Double).toLong()
+            else
+                (map["locationLongitude"] as Long)
             return Student(
                 map["name"] as String,
                 map["surname"] as String,
@@ -73,11 +103,25 @@ class Student {
                 map["duration"] as String,
                 map["contactEmail"] as String,
                 map["contactPhone"] as String,
-                map["profileImageUrl"] as String
+                map["profileImageUrl"] as String,
+                locationLatitude,
+                locationLongitude,
+                map["fcmToken"] as String,
+                map["address"] as String,
+                map["requests"] as MutableList<String>
             )
         }
 
         fun fromDocumentSnapshot(map: DocumentSnapshot): Student{
+            val locationLatitude = if(map["locationLatitude"] !is Long)
+                (map["locationLatitude"] as Double).toLong()
+            else
+                (map["locationLatitude"] as Long)
+
+            val locationLongitude = if(map["locationLongitude"] !is Long)
+                (map["locationLongitude"] as Double).toLong()
+            else
+                (map["locationLongitude"] as Long)
             return Student(
                 map["name"] as String,
                 map["surname"] as String,
@@ -89,7 +133,12 @@ class Student {
                 map["duration"] as String,
                 map["contactEmail"] as String,
                 map["contactPhone"] as String,
-                map["profileImageUrl"] as String
+                map["profileImageUrl"] as String,
+                locationLatitude,
+                locationLongitude,
+                map["fcmToken"] as String,
+                map["address"] as String,
+                map["requests"] as MutableList<String>
             )
         }
     }

@@ -12,7 +12,10 @@ class ProfileActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
-        changeFragment(ProfileFragment(), "uid")
+        val uid = intent.extras!!.getString("uid")
+
+
+        changeFragment(ProfileFragment(), uid)
 
         setTitle("Profil")
     }

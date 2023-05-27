@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mezuniyet Yılı"
+        android:text="Mesafe"
         android:textStyle="bold"
         android:paddingTop="30dp"
         android:paddingBottom="6dp"/>
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content">
 
         <EditText
-            android:id="@+id/etMinGradYear"
+            android:id="@+id/etMinDistance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -29,7 +29,7 @@
             android:hint="Min"/>
 
         <EditText
-            android:id="@+id/etMaxGradYear"
+            android:id="@+id/etMaxDistance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -39,46 +39,51 @@
 
     </LinearLayout>
 
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Şehir"
+        android:text="Paylaşılacak Yıl"
         android:textStyle="bold"
         android:paddingTop="30dp"
         android:paddingBottom="6dp"/>
 
-
-    <EditText
-        android:id="@+id/etCity"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Şehir"/>
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/etMinDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:inputType="number"
+            android:hint="Min"/>
+
+        <EditText
+            android:id="@+id/etMaxDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:hint="Max"/>
+
+    </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Ülke"
+        android:text="Durum"
         android:textStyle="bold"
         android:paddingTop="30dp"
         android:paddingBottom="6dp"/>
-
-
-    <EditText
-        android:id="@+id/etCountry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ülke"/>
-
 
     <Spinner
-        android:id="@+id/programSelectSpinner"
+        android:id="@+id/stateSelectSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
-        android:paddingTop="30dp"
         android:paddingBottom="50dp"/>
-
-
 
 </LinearLayout>

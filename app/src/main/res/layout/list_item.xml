@@ -43,8 +43,8 @@
                 <TextView
                     android:id="@+id/textViewState"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ev Arıyor"/>
+                    android:paddingTop="10dp"
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -52,8 +52,7 @@
                 android:id="@+id/textViewAddress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="right|center_vertical"
-                android:text="Gungoren, Istanbul"/>
+                android:gravity="right|center_vertical" />
 
         </LinearLayout>
 
