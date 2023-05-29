@@ -26,8 +26,9 @@
                 android:adjustViewBounds="true" />
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="vertical"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp">
@@ -49,18 +50,20 @@
             </LinearLayout>
 
             <ImageView
-                android:id="@+id/textViewAddress"
+                android:id="@+id/imageViewApprove"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="right|center_vertical"
-                android:src="@drawable/ic_notifications_black_24dp"/>
+                android:paddingRight="5dp"
+                android:src="@drawable/baseline_check_circle_outline_24"/>
 
             <ImageView
-                android:id="@+id/imageView2"
+                android:id="@+id/imageViewDecline"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:paddingLeft="5dp"
                 android:gravity="right|center_vertical"
-                android:src="@drawable/ic_email"/>
+                android:src="@drawable/baseline_cancel_24"/>
 
         </LinearLayout>
 

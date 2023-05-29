@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -25,10 +26,17 @@ import com.example.estdate.databinding.FragmentProfileBinding
 import com.example.estdate.models.Student
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.RemoteMessage
+import org.json.JSONException
+import org.json.JSONObject
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import java.io.IOException
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -108,7 +116,58 @@ class ProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initPage(view)
+
+        FirebaseMessaging.getInstance().subscribeToTopic("global")
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.d("TAG", "Successfully subscribed to global topic")
+                } else {
+                    Log.e("TAG", "Failed to subscribe to global topic", task.exception)
+                }
+            }
     }
+
+
+    private fun sendPushNotification(std: Student) {
+        val notificationTitle = "Eşleşme İsteği"
+        val notificationMessage = "Yeni bir eşleşme talebi geldi. Uygulama üzerinden görüntüleyebilirsin."
+
+        val notification = JSONObject()
+        val notificationData = JSONObject()
+
+        try {
+            notificationData.put("title", notificationTitle)
+            notificationData.put("message", notificationMessage)
+
+            //notification.put("condition", "'all' in topics")
+            notification.put("to", std.fcmToken)
+            notification.put("data", notificationData)
+        } catch (e: JSONException) {
+            Log.e("TAG", "Failed to create notification JSON", e)
+        }
+
+        val requestBody = notification.toString()
+        val request = Request.Builder()
+            .url("https://fcm.googleapis.com/fcm/send")
+            .post(RequestBody.create("application/json".toMediaTypeOrNull(), requestBody))
+            .addHeader("Authorization", "Bearer AAAA1EPifGc:APA91bH8pdyJxaZYrVB250hf11adOj-yD2V9YvqS2VQ-ZjMnn2jYRJnmYsV3Nzcyy4DNSINv1ntbr3lBVpxV9XDNx8dIlLPJFGmc9TphcLpEbCeEQIlcl17VofDgO7tQ581J1VK3E3Bo")
+            .build()
+
+        OkHttpClient().newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("TAG", "Failed to send push notification", e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    Log.d("TAG", "Successfully sent push notification")
+                } else {
+                    Log.e("TAG", "Failed to send push notification. Response: ${response.body?.string()}")
+                }
+            }
+        })
+    }
+
 
 
     fun initPage(view: View){
@@ -124,7 +183,18 @@ class ProfileFragment : Fragment() {
             binding.textViewGradName.text = student.name + " " + student.surname
             binding.sendMatchRequestBtn.setOnClickListener {
                 if(auth.currentUser != null){
-                    sendRequestNotification(student)
+                    val studentsRef = db.collection("students").document(student.uid)
+                    if(!student.requests.contains(auth.currentUser!!.uid)) {
+                        student.requests.add(auth.currentUser!!.uid)
+                        studentsRef.update("requests", student.requests).addOnSuccessListener {
+                            Toast.makeText(
+                                requireContext(),
+                                "Eşleşme talebi gönderildi.",
+                                Toast.LENGTH_LONG
+                            )
+                        }
+                    }
+                    sendPushNotification(student)
                 }
                 else{
                     val intent = Intent(view.context, LoginActivity::class.java)

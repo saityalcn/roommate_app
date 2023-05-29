@@ -31,9 +31,9 @@ import com.example.estdate.models.Student
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.example.estdate.R
-import com.example.estdate.notification.NotificationFirebaseMessagingService
 import com.google.android.gms.location.*
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.messaging.FirebaseMessaging
 import java.io.IOException
 import java.util.*
 
@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
     ): View {
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
-
+        val auth = Firebase.auth
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
@@ -74,11 +74,28 @@ class HomeFragment : Fragment() {
             }
         }
 
+
         val textView: TextView = binding.textHome
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return binding.root
+    }
+
+    fun checkFcmToken(student: Student){
+        val auth = Firebase.auth
+        val db = Firebase.firestore
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val token = task.result
+                student.fcmToken = token
+            }
+
+            val docRef = db.collection("students").document(auth.currentUser!!.uid)
+
+            docRef.update(student.toMap())
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -97,6 +114,8 @@ class HomeFragment : Fragment() {
                 Glide.with(this)
                     .load(student.profileImageUrl)
                     .into(imageView)
+
+                checkFcmToken(student)
             }
         }
 
