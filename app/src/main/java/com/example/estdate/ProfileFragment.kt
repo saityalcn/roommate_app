@@ -181,6 +181,11 @@ class ProfileFragment : Fragment() {
             binding.progressBar.visibility = View.INVISIBLE
             binding.contentWrapper.visibility = View.VISIBLE
             binding.textViewGradName.text = student.name + " " + student.surname
+            binding.textViewAddress.text = student.address
+            binding.textViewDepartment.text = student.department
+            binding.textViewGrade.text = student.grade
+            binding.textViewDistance.text = student.distance
+            binding.textViewDuration.text = student.duration
             binding.sendMatchRequestBtn.setOnClickListener {
                 if(auth.currentUser != null){
                     val studentsRef = db.collection("students").document(student.uid)
